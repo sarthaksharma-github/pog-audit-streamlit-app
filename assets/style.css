@@ -240,8 +240,9 @@ button[data-baseweb="tab"][aria-selected="true"] {
   font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
-  padding: 0.65rem 1.4rem !important;
+  padding: 0.75rem 1.6rem !important;
   transition: all 0.15s ease-in-out !important;
+  opacity: 1 !important;
 }
 
 .stButton > button:hover {
@@ -250,18 +251,26 @@ button[data-baseweb="tab"][aria-selected="true"] {
   color: #ffffff !important;
 }
 
-/* Download Buttons */
+/* Download Buttons - Clean Charcoal with visible white text and bronze accent on hover */
 .stDownloadButton > button {
-  background-color: #191919 !important;
+  background-color: #2b2b2b !important;
   color: #ffffff !important;
-  border: 1px solid #191919 !important;
+  border: 1px solid #2b2b2b !important;
   border-radius: 0px !important;
   font-family: 'Anthropic Sans', 'Inter', sans-serif !important;
   font-size: 13px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.04em !important;
-  padding: 0.65rem 1.4rem !important;
+  padding: 0.75rem 1.6rem !important;
+  transition: all 0.15s ease-in-out !important;
+  opacity: 1 !important;
+}
+
+.stDownloadButton > button p,
+.stDownloadButton > button span,
+.stDownloadButton > button div {
+  color: #ffffff !important;
 }
 
 .stDownloadButton > button:hover {
@@ -323,4 +332,30 @@ section[data-testid="stFileUploadDropzone"] {
   color: var(--msi-dark) !important;
   margin-bottom: 12px !important;
   letter-spacing: -0.01em !important;
+}
+
+/* Constrained Side-by-Side Image Inspector - Fits Viewport Without Scrolling */
+.inspector-img-container {
+  background-color: #faf9f6;
+  border: 1px solid var(--msi-border);
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 380px;
+  overflow: hidden;
+}
+
+.inspector-img-container img {
+  max-height: 360px !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  width: auto !important;
+}
+
+/* Also constrain standard streamlit image element in inspector */
+[data-testid="stImage"] img {
+  max-height: 420px !important;
+  object-fit: contain !important;
+  margin: 0 auto !important;
 }

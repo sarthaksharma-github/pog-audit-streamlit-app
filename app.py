@@ -251,113 +251,46 @@ with tab_dashboard:
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Interactive Visualizations
-        c_left, c_right = st.columns([1, 1.4])
+        # Interactive Visualizations - Focused Donut Breakdown
+        st.markdown('<div class="section-title">Compliance Verdict Breakdown</div>', unsafe_allow_html=True)
+        verdict_counts = {
+            "Approved": res["approved_count"],
+            "Rejected": res["rejected_count"],
+            "Error": res["error_count"]
+        }
+        labels = [k for k, v in verdict_counts.items() if v > 0]
+        values = [v for k, v in verdict_counts.items() if v > 0]
+        colors_map = {
+            "Approved": "#8b6f4e",
+            "Rejected": "#191919",
+            "Error": "#e2dfd7"
+        }
 
-        with c_left:
-            st.markdown('<div class="section-title">Compliance Verdict Breakdown</div>', unsafe_allow_html=True)
-            verdict_counts = {
-                "Approved": res["approved_count"],
-                "Rejected": res["rejected_count"],
-                "Error": res["error_count"]
-            }
-            labels = [k for k, v in verdict_counts.items() if v > 0]
-            values = [v for k, v in verdict_counts.items() if v > 0]
-            colors_map = {
-                "Approved": "#8b6f4e",
-                "Rejected": "#191919",
-                "Error": "#e2dfd7"
-            }
+        fig_donut = go.Figure(data=[go.Pie(
+            labels=labels,
+            values=values,
+            hole=0.6,
+            marker=dict(colors=[colors_map.get(l, "#8b6f4e") for l in labels]),
+            textinfo="percent+label",
+            hoverinfo="label+value+percent",
+            insidetextorientation="horizontal"
+        )])
+        fig_donut.update_layout(
+            showlegend=True,
+            margin=dict(t=10, b=10, l=10, r=10),
+            height=300,
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font=dict(family="Anthropic Sans, Inter, sans-serif", color="#191919")
+        )
+        st.plotly_chart(fig_donut, use_container_width=True)
 
-            fig_donut = go.Figure(data=[go.Pie(
-                labels=labels,
-                values=values,
-                hole=0.6,
-                marker=dict(colors=[colors_map.get(l, "#8b6f4e") for l in labels]),
-                textinfo="percent+label",
-                hoverinfo="label+value+percent",
-                insidetextorientation="horizontal"
-            )])
-            fig_donut.update_layout(
-                showlegend=True,
-                margin=dict(t=10, b=10, l=10, r=10),
-                height=320,
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
-                font=dict(family="Anthropic Sans, Inter, sans-serif", color="#191919")
-            )
-            st.plotly_chart(fig_donut, use_container_width=True)
-
-        with c_right:
-            st.markdown('<div class="section-title">Store Location Compliance Rankings</div>', unsafe_allow_html=True)
-
-            # Build store dataframe
-            st_data_list = []
-            for s_id, s_info in res["store_summary"].items():
-                pass_pct = (s_info["approved"] / s_info["total"] * 100) if s_info["total"] > 0 else 0
-                st_data_list.append({
-                    "Store": f"Store {s_id}",
-                    "Total": s_info["total"],
-                    "Approved": s_info["approved"],
-                    "Rejected": s_info["rejected"],
-                    "Pass Rate (%)": round(pass_pct, 1)
-                })
-
-            df_stores = pd.DataFrame(st_data_list)
-
-            # Separate multi-bay stores (richest insights) and single-bay stores
-            multi_bay_stores = df_stores[df_stores["Total"] > 1].sort_values(by=["Pass Rate (%)", "Total"], ascending=[True, False])
-            
-            if len(multi_bay_stores) >= 5:
-                chart_df = multi_bay_stores.head(15)
-                st.caption("Displaying stores with multiple audited bays ranked by compliance rate.")
-            else:
-                chart_df = df_stores.sort_values(by="Pass Rate (%)", ascending=True).head(15)
-                st.caption("Displaying stores ranked by compliance rate.")
-
-            fig_bar = go.Figure()
-
-            # Approved bars
-            fig_bar.add_trace(go.Bar(
-                y=chart_df["Store"],
-                x=chart_df["Approved"],
-                name="Approved",
-                orientation='h',
-                marker=dict(color='#8b6f4e'),
-                text=chart_df["Approved"],
-                textposition='auto'
-            ))
-
-            # Rejected bars
-            fig_bar.add_trace(go.Bar(
-                y=chart_df["Store"],
-                x=chart_df["Rejected"],
-                name="Rejected",
-                orientation='h',
-                marker=dict(color='#191919'),
-                text=chart_df["Rejected"],
-                textposition='auto'
-            ))
-
-            fig_bar.update_layout(
-                barmode='stack',
-                height=320,
-                margin=dict(t=10, b=10, l=10, r=10),
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
-                legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
-                font=dict(family="Anthropic Sans, Inter, sans-serif", color="#191919"),
-                xaxis=dict(title="Number of Bays Audited", showgrid=True, gridcolor="#f2f0ea"),
-                yaxis=dict(type='category', showgrid=False)
-            )
-            st.plotly_chart(fig_bar, use_container_width=True)
-
-        # Database Explorer (Renamed from Notion-Style)
+        # Database Explorer
         st.markdown('<div class="section-title">Audit Record Database</div>', unsafe_allow_html=True)
 
         df_rows = pd.DataFrame(res["row_results"])
 
-        f1, f2, f3 = st.columns([1, 1, 2])
+        f1, f2 = st.columns([1, 1])
         with f1:
             filter_verdict = st.multiselect(
                 "Filter Verdict",
@@ -370,20 +303,12 @@ with tab_dashboard:
                 options=["All"] + sorted(list(df_rows["store"].unique())),
                 default=["All"]
             )
-        with f3:
-            search_query = st.text_input("Search Bay ID or Detected Class", placeholder="e.g. Bay 2, open...")
 
         filtered_df = df_rows.copy()
         if "All" not in filter_verdict:
             filtered_df = filtered_df[filtered_df["verdict"].isin(filter_verdict)]
         if "All" not in filter_store:
             filtered_df = filtered_df[filtered_df["store"].isin(filter_store)]
-        if search_query:
-            q = search_query.lower()
-            filtered_df = filtered_df[
-                filtered_df["bay"].str.lower().str.contains(q) |
-                filtered_df["format"].str.lower().str.contains(q)
-            ]
 
         display_cols = ["row_idx", "store", "bay", "verdict", "confidence", "format", "boxes", "latency_ms"]
         st.dataframe(
@@ -466,13 +391,13 @@ with tab_inspector:
             with p_col1:
                 st.markdown("**Original Submitted Photo**")
                 if item["original_path"] and Path(item["original_path"]).exists():
-                    st.image(item["original_path"], use_container_width=True)
+                    st.image(item["original_path"], width=460)
                 else:
                     st.warning("Original photo not available or download failed.")
 
             with p_col2:
                 st.markdown("**AI Vision Bounding Box Prediction**")
                 if item["annotated_path"] and Path(item["annotated_path"]).exists():
-                    st.image(item["annotated_path"], use_container_width=True)
+                    st.image(item["annotated_path"], width=460)
                 else:
                     st.info("No detections or photo unavailable.")
