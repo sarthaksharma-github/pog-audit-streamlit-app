@@ -365,16 +365,22 @@ def run_audit_pipeline(
     ws_dash.cell(row=1, column=1, value="MSI SURFACES - PLANOGRAM (POG) AI AUDIT EXECUTIVE DASHBOARD").font = Font(name="Calibri", size=14, bold=True, color="8B6F4E")
 
     rate_pct = (approved_total / total_data_rows * 100.0) if total_data_rows > 0 else 0.0
+    stores_approved = sum(1 for s in store_summary.values() if s["approved"] >= 1)
+    stores_review = len(store_summary) - stores_approved
+    store_pass_rate = (stores_approved / len(store_summary) * 100.0) if len(store_summary) > 0 else 0.0
 
     kpis = [
         ("Audit Target Specification", model_cfg["name"]),
         ("Model Weights Architecture", model_cfg["weights"].name),
         ("Calibrated Confidence Threshold", f"{model_cfg['conf']:.3f}"),
         ("Total Photo Bays Audited", total_data_rows),
-        ("Total Store Locations Audited", len(store_summary)),
         ("Total Compliant Photos (Approved)", approved_total),
         ("Total Non-Compliant Photos (Rejected)", rejected_total),
-        ("Overall Compliance Pass Rate (%)", f"{rate_pct:.2f}%"),
+        ("Overall Photo Pass Rate (%)", f"{rate_pct:.2f}%"),
+        ("Total Store Locations Audited", len(store_summary)),
+        ("Compliant Store Locations (>=1 Passed Bay)", stores_approved),
+        ("Store Locations Requiring Review (0 Passed Bays)", stores_review),
+        ("Store Compliance Pass Rate (%)", f"{store_pass_rate:.2f}%"),
         ("Missing / Unreachable Image URLs", missing_image_count)
     ]
 
@@ -390,10 +396,10 @@ def run_audit_pipeline(
         c2.font = reg_font
         c1.border = thin_border
         c2.border = thin_border
-        if "Approved" in k:
+        if "Approved" in k or "Compliant Store" in k:
             c2.fill = pass_fill
             c2.font = pass_font
-        elif "Rejected" in k:
+        elif "Rejected" in k or "Requiring Review" in k:
             c2.fill = fail_fill
             c2.font = fail_font
 
@@ -417,7 +423,8 @@ def run_audit_pipeline(
     for idx, st_num in enumerate(sorted(store_summary.keys(), key=sort_store), start=st_start_row + 2):
         s_data = store_summary[st_num]
         s_rate = (s_data["approved"] / s_data["total"] * 100.0) if s_data["total"] > 0 else 0.0
-        s_status = "Approved" if s_rate >= 80.0 else "Needs Review"
+        # If at least 1 photo for a store passes detection, the entire store is Approved
+        s_status = "Approved" if s_data["approved"] >= 1 else "Needs Review"
 
         vals = [
             st_num,

@@ -226,12 +226,15 @@ with tab_dashboard:
             )
 
         with col4:
+            stores_compliant = sum(1 for s in res['store_summary'].values() if s.get('approved', 0) >= 1)
+            tot_stores = len(res['store_summary'])
+            store_pass_pct = (stores_compliant / tot_stores * 100) if tot_stores else 0
             st.markdown(
                 f"""
                 <div class="msi-kpi-card" style="border-top-color: #7d6245;">
                   <div class="msi-kpi-label">Store Locations</div>
-                  <div class="msi-kpi-value">{len(res['store_summary'])}</div>
-                  <div class="msi-kpi-sub">Distinct Stores</div>
+                  <div class="msi-kpi-value">{tot_stores}</div>
+                  <div class="msi-kpi-sub">{stores_compliant} Compliant ({store_pass_pct:.1f}%)</div>
                 </div>
                 """,
                 unsafe_allow_html=True
