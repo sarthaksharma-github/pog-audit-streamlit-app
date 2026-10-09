@@ -1,63 +1,116 @@
-/* MSI Surfaces Architectural Styling for Streamlit */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Raleway:wght@300;400;500;600;700&display=swap');
+/* ==========================================================================
+   Anthropic Typography System & Clean Minimal Architectural UI
+   ========================================================================== */
+
+/* Load Anthropic Typefaces via jsDelivr */
+@font-face {
+  font-family: 'Anthropic Sans';
+  src: url('https://cdn.jsdelivr.net/npm/anthropic-fonts@1.1.0/cdn/v1/fonts/AnthropicSans@400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Anthropic Sans';
+  src: url('https://cdn.jsdelivr.net/npm/anthropic-fonts@1.1.0/cdn/v1/fonts/AnthropicSans@500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Anthropic Sans';
+  src: url('https://cdn.jsdelivr.net/npm/anthropic-fonts@1.1.0/cdn/v1/fonts/AnthropicSans@700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Anthropic Serif';
+  src: url('https://cdn.jsdelivr.net/npm/anthropic-fonts@1.1.0/cdn/v1/fonts/AnthropicSerif@400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Anthropic Serif';
+  src: url('https://cdn.jsdelivr.net/npm/anthropic-fonts@1.1.0/cdn/v1/fonts/AnthropicSerif@700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Anthropic Mono';
+  src: url('https://cdn.jsdelivr.net/npm/anthropic-fonts@1.1.0/cdn/v1/fonts/AnthropicMono@400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fallback Google Fonts for robust cross-browser rendering */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
   --msi-bronze: #8b6f4e;
   --msi-bronze-hover: #a88964;
   --msi-bronze-dark: #7d6245;
-  --msi-dark: #212529;
-  --msi-body: #555555;
-  --msi-muted: #6c757d;
-  --msi-bg-tint: #f8f9fa;
-  --msi-stone: #efefef;
-  --msi-border: #d4d4d4;
-  --msi-border-light: #dee2e6;
+  --msi-dark: #191919;
+  --msi-body: #4b4b4b;
+  --msi-muted: #737373;
+  --msi-bg-tint: #faf9f6;
+  --msi-stone: #f2f0ea;
+  --msi-border: #e2dfd7;
+  --msi-border-light: #ece9e2;
 }
 
-/* Force zero border radius across the whole app */
+/* Force zero border radius across all controls */
 *, *::before, *::after {
   border-radius: 0px !important;
 }
 
-/* Global Font Settings */
+/* Global Body Font - Anthropic Sans with Inter fallback */
 html, body, [class*="css"], .stMarkdown, .stText, p, span, label, div {
-  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
-  color: #212529;
+  font-family: 'Anthropic Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  color: var(--msi-dark);
 }
 
+/* Headings - Anthropic Serif with Lora & Georgia fallback (Anthropic Website Style) */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Raleway', sans-serif !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
-  color: #212529 !important;
-  font-weight: 600 !important;
+  font-family: 'Anthropic Serif', 'Lora', Georgia, 'Times New Roman', serif !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.015em !important;
+  color: var(--msi-dark) !important;
+  text-transform: none !important;
 }
 
 /* Top Announcement Bar */
 .msi-announcement-bar {
   background-color: #8b6f4e;
   color: #ffffff !important;
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  padding: 8px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  border-left: 4px solid #212529;
 }
 
-.msi-announcement-bar span, .msi-announcement-bar a {
+.msi-announcement-bar span {
   color: #ffffff !important;
-  text-decoration: none;
+  font-family: 'Anthropic Sans', 'Inter', sans-serif !important;
 }
 
-/* Luxury Header Container */
+/* Hero Header Container */
 .msi-header-hero {
-  border-bottom: 2px solid #8b6f4e;
-  padding-bottom: 18px;
+  border-bottom: 1px solid var(--msi-border);
+  padding-bottom: 20px;
   margin-bottom: 28px;
   display: flex;
   justify-content: space-between;
@@ -65,76 +118,130 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .msi-header-title {
-  font-family: 'Raleway', sans-serif !important;
-  font-size: 32px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #212529;
-  margin: 0;
-  letter-spacing: 0.05em;
+  font-family: 'Anthropic Serif', 'Lora', Georgia, serif !important;
+  font-size: 34px !important;
+  font-weight: 500 !important;
+  color: var(--msi-dark) !important;
+  margin: 0 !important;
+  line-height: 1.15 !important;
 }
 
 .msi-header-subtitle {
+  font-family: 'Anthropic Sans', 'Inter', sans-serif !important;
   font-size: 14px;
-  color: #8b6f4e;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-top: 4px;
+  color: var(--msi-muted);
+  font-weight: 400;
+  margin-top: 6px;
 }
 
-/* KPI Card Blocks (Power BI / MSI Architecture Style) */
+/* Sidebar & Expander Styling - Clean & Uncluttered */
+[data-testid="stSidebar"] {
+  background-color: #faf9f6 !important;
+  border-right: 1px solid var(--msi-border);
+}
+
+[data-testid="stSidebar"] .stMarkdown p {
+  line-height: 1.6 !important;
+  font-size: 13px !important;
+}
+
+[data-testid="stExpander"] {
+  background-color: #ffffff !important;
+  border: 1px solid var(--msi-border) !important;
+  border-radius: 0px !important;
+}
+
+[data-testid="stExpander"] summary {
+  font-family: 'Anthropic Sans', 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--msi-dark) !important;
+  padding: 10px 14px !important;
+}
+
+[data-testid="stExpander"] div[data-testid="stExpanderDetails"] {
+  padding: 12px 14px !important;
+  font-size: 12.5px !important;
+  line-height: 1.65 !important;
+  color: #4b4b4b !important;
+}
+
+/* Streamlit Tabs Navigation - Clean Anthropic / Minimalist Style */
+button[data-baseweb="tab"] {
+  font-family: 'Anthropic Sans', 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.03em !important;
+  text-transform: uppercase !important;
+  padding: 12px 20px !important;
+  border-radius: 0px !important;
+  color: var(--msi-muted) !important;
+  background-color: transparent !important;
+  border-bottom: 2px solid transparent !important;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] {
+  color: var(--msi-dark) !important;
+  border-bottom: 2px solid #8b6f4e !important;
+  font-weight: 600 !important;
+}
+
+/* Fix File Uploader Raw Ligature Spilling ("upload") */
+[data-testid="stFileUploadDropzone"] span.st-emotion-cache-1dkvzay {
+  font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
+}
+
+/* Ensure Streamlit Icon spans have icon font assigned */
+[data-testid="stIconMaterial"] {
+  font-family: 'Material Symbols Rounded', 'Material Icons', sans-serif !important;
+}
+
+/* KPI Card Blocks (Power BI / Anthropic Minimalist Style) */
 .msi-kpi-card {
   background-color: #ffffff;
-  border: 1px solid #dee2e6;
-  border-top: 3px solid #8b6f4e;
+  border: 1px solid var(--msi-border);
+  border-top: 2px solid #8b6f4e;
   padding: 18px 20px;
-  transition: all 0.2s ease-in-out;
-}
-
-.msi-kpi-card:hover {
-  border-color: #8b6f4e;
-  box-shadow: 0 4px 12px rgba(139, 111, 78, 0.12);
 }
 
 .msi-kpi-label {
-  font-family: 'Raleway', sans-serif !important;
+  font-family: 'Anthropic Sans', 'Inter', sans-serif !important;
   font-size: 11px;
-  font-weight: 700;
-  color: #6c757d;
+  font-weight: 600;
+  color: var(--msi-muted);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   margin-bottom: 6px;
 }
 
 .msi-kpi-value {
   font-size: 32px;
-  font-weight: 700;
-  color: #212529;
+  font-weight: 600;
+  color: var(--msi-dark);
   line-height: 1.1;
-  font-family: 'Raleway', sans-serif !important;
+  font-family: 'Anthropic Serif', 'Lora', Georgia, serif !important;
 }
 
 .msi-kpi-sub {
   font-size: 12px;
   color: #8b6f4e;
   margin-top: 6px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
-/* Buttons */
+/* Primary Action Buttons */
 .stButton > button {
   background-color: #8b6f4e !important;
   color: #ffffff !important;
-  border: 2px solid #8b6f4e !important;
+  border: 1px solid #8b6f4e !important;
   border-radius: 0px !important;
-  font-family: 'Open Sans', sans-serif !important;
-  font-size: 14px !important;
+  font-family: 'Anthropic Sans', 'Inter', sans-serif !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  padding: 0.6rem 1.4rem !important;
-  transition: background-color 0.2s ease, border-color 0.2s ease !important;
+  letter-spacing: 0.04em !important;
+  padding: 0.65rem 1.4rem !important;
+  transition: all 0.15s ease-in-out !important;
 }
 
 .stButton > button:hover {
@@ -143,17 +250,18 @@ h1, h2, h3, h4, h5, h6 {
   color: #ffffff !important;
 }
 
+/* Download Buttons */
 .stDownloadButton > button {
-  background-color: #212529 !important;
+  background-color: #191919 !important;
   color: #ffffff !important;
-  border: 2px solid #212529 !important;
+  border: 1px solid #191919 !important;
   border-radius: 0px !important;
-  font-family: 'Open Sans', sans-serif !important;
-  font-size: 14px !important;
+  font-family: 'Anthropic Sans', 'Inter', sans-serif !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  padding: 0.6rem 1.4rem !important;
+  letter-spacing: 0.04em !important;
+  padding: 0.65rem 1.4rem !important;
 }
 
 .stDownloadButton > button:hover {
@@ -162,79 +270,57 @@ h1, h2, h3, h4, h5, h6 {
   color: #ffffff !important;
 }
 
-/* Form Inputs, Select Boxes, Radio */
-.stRadio > div {
-  gap: 12px;
-}
-
-div[data-baseweb="select"] > div,
-div[data-baseweb="input"] > div {
-  border-radius: 0px !important;
-  border-color: #cbcbcb !important;
-}
-
 /* File Uploader styling */
 section[data-testid="stFileUploadDropzone"] {
-  border: 2px dashed #8b6f4e !important;
-  background-color: #ffffff !important;
+  border: 1px dashed #8b6f4e !important;
+  background-color: #faf9f6 !important;
   border-radius: 0px !important;
   padding: 24px !important;
 }
 
 /* Status Badges */
 .badge-approved {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #c8e6c9;
-  padding: 4px 10px;
-  font-weight: 700;
+  background-color: #eef5ee;
+  color: #276738;
+  border: 1px solid #c9e2cd;
+  padding: 3px 8px;
+  font-weight: 600;
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   display: inline-block;
 }
 
 .badge-rejected {
-  background-color: #ffebee;
-  color: #c62828;
-  border: 1px solid #ffcdd2;
-  padding: 4px 10px;
-  font-weight: 700;
+  background-color: #fdf0f0;
+  color: #b32626;
+  border: 1px solid #f6c8c8;
+  padding: 3px 8px;
+  font-weight: 600;
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   display: inline-block;
 }
 
 .badge-error {
-  background-color: #efefef;
-  color: #616161;
-  border: 1px solid #d4d4d4;
-  padding: 4px 10px;
-  font-weight: 700;
+  background-color: #f4f3ef;
+  color: #63615a;
+  border: 1px solid #dedcd4;
+  padding: 3px 8px;
+  font-weight: 600;
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   display: inline-block;
 }
 
-/* Notion / Power BI style Container Cards */
-.notion-card {
-  background-color: #ffffff;
-  border: 1px solid #dee2e6;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.notion-card-title {
-  font-family: 'Raleway', sans-serif !important;
-  font-size: 16px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #212529;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* Section Title Headers */
+.section-title {
+  font-family: 'Anthropic Serif', 'Lora', Georgia, serif !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  color: var(--msi-dark) !important;
+  margin-bottom: 12px !important;
+  letter-spacing: -0.01em !important;
 }
